@@ -133,6 +133,12 @@ resource "aws_instance" "ec2-instance" {
   }
 }
 
+# associating elastic ip with ec2 instance 
+resource "aws_eip_association" "eip_assoc" {
+    instance_id   = aws_instance.ec2-instance.id
+    allocation_id = "eipalloc-0f1dc9e8c66536b2e"
+}
+
 module "provision" {
   source               = "./provision"
   host                 = aws_instance.ec2-instance.public_dns
@@ -144,3 +150,5 @@ module "provision" {
   use_local            = "nope"
   public_ip            = aws_instance.ec2-instance.public_dns
 }
+
+

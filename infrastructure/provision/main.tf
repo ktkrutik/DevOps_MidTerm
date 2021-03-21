@@ -1,7 +1,7 @@
 resource "null_resource" "remote_exec_from_github" {
 
  connection {
-  host = "${var.host}"
+  host = "eipalloc-0f1dc9e8c66536b2e"
   type = "ssh" 
   user = "ubuntu" 
   private_key = "${file("/Users/krutik/Documents/Northeastern Courses/DevOps/Keys/aws_terraform")}"
@@ -21,6 +21,7 @@ resource "null_resource" "remote_exec_from_github" {
       "sudo apt install python3-venv -y",
       "python3 -m venv .venv",
       "source .venv/bin/activate",
+      "pip3 install gunicorn",
       "pip3 install flask",
       "pip3 install pymongo",
       "pip3 install flask-cors",
@@ -28,7 +29,6 @@ resource "null_resource" "remote_exec_from_github" {
       "pip3 install requests",
       "pip3 install dnspython",
       "pip3 install pytz",
-      "pip3 install gunicorn",
       "pip3 install python-dateutil --upgrade",
       "pip3 install python-dotenv",
       "sudo systemctl daemon-reload",
@@ -40,7 +40,7 @@ resource "null_resource" "remote_exec_from_github" {
       "sudo npm install -g npm@latest",
       "sudo npm install -g n",
       "sudo n 12.16.1",
-    # #  "npm install",
+    #  "npm install",
       "npm --force install",
       "npm run build",
       "sudo apt install nginx -y",
