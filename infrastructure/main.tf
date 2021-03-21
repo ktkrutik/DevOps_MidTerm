@@ -5,7 +5,7 @@ provider "aws" {
 
 # Create key pair
 resource "aws_key_pair" "deployer" {
-  key_name   = "deployer-key"
+  key_name   = "aws_terraform"
   public_key = file("/Users/krutik/Documents/Northeastern Courses/DevOps/Keys/aws_terraform.pub")
 }
 
@@ -26,7 +26,7 @@ resource "aws_vpc" "vpc-1" {
 resource "aws_subnet" "subnet-1" {
     cidr_block              = "${var.subnet1_cidr}"
     vpc_id                  = aws_vpc.vpc-1.id
-    
+    map_public_ip_on_launch = true
     tags = {
         Name = "csye7220-subnet-1"
     }
@@ -47,7 +47,10 @@ resource "aws_internet_gateway" "igw" {
 # Create Route Table
 resource "aws_route_table" "rt" {
   vpc_id = aws_vpc.vpc-1.id
-
+  route {
+    cidr_block = "${var.route_cidr}"
+    gateway_id = aws_internet_gateway.igw.id
+  }
   tags = {
     Name = "csye7220-route-table"
   }
@@ -64,7 +67,7 @@ resource "aws_route_table_association" "rta-a" {
 
 # Create EC2 security group for your EC2 instances
 resource "aws_security_group" "ec2-sg" {
-  vpc_id       = aws_vpc.vpc-1.id
+  # vpc_id       = aws_vpc.vpc-1.id
   name         = "${var.ec2_sg_name}"
   
 #   allow ingress of port 22
@@ -112,17 +115,32 @@ resource "aws_security_group" "ec2-sg" {
   }
 }
 
+resource "aws_network_interface_sg_attachment" "sg_attachment" {
+  security_group_id    = aws_security_group.ec2-sg.id
+  network_interface_id = aws_instance.ec2-instance.primary_network_interface_id
+}
 
 # Create a EC2 instance
 resource "aws_instance" "ec2-instance" {
   ami = "ami-042e8287309f5df03"
   instance_type = "${var.ec2_inst_type}"
-  key_name = "${var.keyPair_name}"
-  subnet_id = aws_subnet.subnet-1.id
-  vpc_security_group_ids = [aws_security_group.ec2-sg.id]
+  key_name = aws_key_pair.deployer.key_name
+  # subnet_id = aws_subnet.subnet-1.id
+  # vpc_security_group_ids = [aws_security_group.ec2-sg.id]
 
   tags = {
     Name = "csye7220-ec2-instance"
   }
 }
 
+module "provision" {
+  source               = "./provision"
+  host                 = aws_instance.ec2-instance.public_dns
+  path_to_private_key  = "${var.path_to_private_key}"
+  base_directory       = "/Users/krutik/Documents/Northeastern Courses/DevOps/CSYE7220/MidTerm/DevOps_MidTerm/infrastructure"
+  project_link_or_path = "foo"
+  image_version        = "bar"
+  use_github           = "yep"
+  use_local            = "nope"
+  public_ip            = aws_instance.my_test_instance.public_dns
+}

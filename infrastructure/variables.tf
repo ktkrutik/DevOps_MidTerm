@@ -43,5 +43,5 @@ variable "ec2_inst_type" {
 }
 
 variable "keyPair_name" {
-  default = "dev_key"
+  default = "aws_terraform"
 }
