@@ -5,8 +5,7 @@ After=network.target
 [Service] 
 User=ubuntu
 WorkingDirectory=/home/ubuntu/uber/DevOps_MidTerm/uberBE
-Environment="PATH=/home/ubuntu/uber/DevOps_MidTerm/uberBE/.venv/bin" 
-ExecStart=/home/ubuntu/uber/DevOps_MidTerm/uberBE/.venv/bin/gunicorn --workers 3 -b 0.0.0.0:5000 -t 600 wsgi:app 
+ExecStart=/home/ubuntu/.local/bin/gunicorn --workers 3 -b 0.0.0.0:5000 -t 600 wsgi:app 
 Restart=always
 
 [Install] 

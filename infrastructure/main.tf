@@ -142,5 +142,5 @@ module "provision" {
   image_version        = "bar"
   use_github           = "yep"
   use_local            = "nope"
-  public_ip            = aws_instance.my_test_instance.public_dns
+  public_ip            = aws_instance.ec2-instance.public_dns
 }

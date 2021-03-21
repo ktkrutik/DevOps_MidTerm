@@ -45,3 +45,7 @@ variable "ec2_inst_type" {
 variable "keyPair_name" {
   default = "aws_terraform"
 }
+
+variable "path_to_private_key" {
+  default = "/Users/krutik/Documents/Northeastern Courses/DevOps/Keys/aws_terraform"
+}
