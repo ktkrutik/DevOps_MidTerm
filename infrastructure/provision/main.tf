@@ -1,7 +1,7 @@
 resource "null_resource" "remote_exec_from_github" {
 
  connection {
-  host = "eipalloc-0f1dc9e8c66536b2e"
+  host = "54.161.133.200"
   type = "ssh" 
   user = "ubuntu" 
   private_key = "${file("/Users/krutik/Documents/Northeastern Courses/DevOps/Keys/aws_terraform")}"
@@ -40,7 +40,6 @@ resource "null_resource" "remote_exec_from_github" {
       "sudo npm install -g npm@latest",
       "sudo npm install -g n",
       "sudo n 12.16.1",
-    #  "npm install",
       "npm --force install",
       "npm run build",
       "sudo apt install nginx -y",

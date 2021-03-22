@@ -328,7 +328,8 @@ def applyRecordLevelUpdates():
 def applyCollectionLevelUpdates():
     global bookings
     with mongo_client:
-        db = mongo_client['bookings']
+        db = mongo_client['uber']
+        # db = mongo_client['bookings']
         mongo_collection = db['bookings']
 
         cursor = mongo_collection.find({})
